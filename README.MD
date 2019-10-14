@@ -1,5 +1,14 @@
 # A Simple and Fast Implementation of Faster R-CNN
 
+定义了整个网络，包括了RPN和ROI两部分。
+    RCNN原来是不用做回归的，只要做分类，框框的位置由Selective Search实现，分类用CNN特征提取+SVM实现，最后还要对proposal做box回归，每一类训练线性回归模型做回归（proposal不够精确）。
+    Fast-rcnn首先融合了ROI，可以把不同大小的输入映射到一个固定尺度的特征向量，但是没有去掉Selective Search.用softmax代替SVM，将最后的线性回归（模型）放到网络中做，统一网络。
+        就差Region proposal不在网络中了
+    Faster-rcnn 用RPN来替代Selective Search确定候选框，注意RPN也有分类和回归损失，只是分类是用来评价anchor(候选框)是好是坏的.
+
+    共享卷基层，原来每一个候选框都要进入CNN，现在输入一张完整图片提取特征，就可以得到每个候选框的特征,这和ROI都是SPP提出的，fast-rcnn已经这么做了。
+    
+
 ## 1. Introduction
 
 **I've update the code to support both Python2 and Python3, PyTorch 0.4. If you want the old version code please checkout branch [v0.3](https://github.com/chenyuntc/simple-faster-rcnn-pytorch/tree/0.3)**
